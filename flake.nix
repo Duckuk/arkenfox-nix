@@ -6,6 +6,8 @@ in {
 
   outputs = {self}: (
     flake-utils.eachDefaultSystem
-    (system: import ./default.nix {})
+    (system: {
+      module = import ./default.nix;
+    })
   );
 }
