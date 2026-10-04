@@ -6,8 +6,15 @@ in {
 
   outputs = {self}: (
     flake-utils.eachDefaultSystem
-    (system: {
-      module = import ./default.nix;
-    })
+    (system:
+      {
+        # Use this to override nixpkgs if desired.
+        # e.g `arkenfox-nix.loadModule {inherit pkgs;}`
+        loadModule = import ./default.nix;
+      }
+      // (import ./default.nix {
+        pkgs = import sources.nixpkgs {inherit system;};
+        inherit system;
+      }))
   );
 }
