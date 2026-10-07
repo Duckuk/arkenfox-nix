@@ -1,20 +1,20 @@
-let
-  sources = import ./npins;
-  flake-utils = import sources.flake-utils;
-in {
+{
   description = "arkenfox/user.js as a Nix attribute set";
 
-  outputs = {self}: (
-    flake-utils.eachDefaultSystemPassThrough
-    (system:
-      {
-        # Use this to override nixpkgs if desired.
-        # e.g `arkenfox-nix.loadModule {inherit pkgs;}`
-        loadModule = import ./default.nix;
-      }
-      // (import ./default.nix {
-        pkgs = import sources.nixpkgs {inherit system;};
-        inherit system;
-      }))
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+  }: (
+    flake-utils.lib.eachDefaultSystemPassThrough
+    (system: (import ./default.nix {
+      inherit system;
+      pkgs = import nixpkgs {inherit system;};
+    }))
   );
 }
