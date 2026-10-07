@@ -5,7 +5,7 @@ in {
   description = "arkenfox/user.js as a Nix attribute set";
 
   outputs = {self}: (
-    flake-utils.eachDefaultSystem
+    flake-utils.eachDefaultSystemPassThrough
     (system:
       {
         # Use this to override nixpkgs if desired.
